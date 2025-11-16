@@ -12,37 +12,82 @@ public interface IFixedUpdatable
 public class UpdateManager : MonoBehaviour
 {
     List<IUpdatable> updatables = new List<IUpdatable>();
+    List<IUpdatable> toAdd = new List<IUpdatable>();
+    List<IUpdatable> toRemove = new List<IUpdatable>();
+
     List<IFixedUpdatable> fixedUpdatables = new List<IFixedUpdatable>();
+    List<IFixedUpdatable> fixedToAdd = new List<IFixedUpdatable>();
+    List<IFixedUpdatable> fixedToRemove = new List<IFixedUpdatable>();
 
     private void Update()
     {
-        foreach (var updatable in updatables)
+        ApplyPendingChanges();
+
+        for (int i = 0; i < updatables.Count; i++)
         {
-            updatable.OnUpdate();
+            updatables[i].OnUpdate();
         }
     }
+
     private void FixedUpdate()
     {
-        foreach (var fixedUpdatable in fixedUpdatables)
+        ApplyPendingFixedChanges();
+
+        for (int i = 0; i < fixedUpdatables.Count; i++)
         {
-            fixedUpdatable.OnFixedUpdate();
+            fixedUpdatables[i].OnFixedUpdate();
+        }
+    }
+
+    void ApplyPendingChanges()
+    {
+        if (toAdd.Count > 0)
+        {
+            updatables.AddRange(toAdd);
+            toAdd.Clear();
+        }
+
+        if (toRemove.Count > 0)
+        {
+            foreach (var u in toRemove)
+                updatables.Remove(u);
+            toRemove.Clear();
+        }
+    }
+
+    void ApplyPendingFixedChanges()
+    {
+        if (fixedToAdd.Count > 0)
+        {
+            fixedUpdatables.AddRange(fixedToAdd);
+            fixedToAdd.Clear();
+        }
+
+        if (fixedToRemove.Count > 0)
+        {
+            foreach (var f in fixedToRemove)
+                fixedUpdatables.Remove(f);
+            fixedToRemove.Clear();
         }
     }
 
     public void AddUpdatable(IUpdatable updatable)
     {
-        updatables.Add(updatable);
+        toAdd.Add(updatable);
     }
+
     public void RemoveUpdatable(IUpdatable updatable)
     {
-        updatables.Remove(updatable);
+        toRemove.Add(updatable);
     }
+
     public void AddFixedUpdatable(IFixedUpdatable fixedUpdatable)
     {
-        fixedUpdatables.Add(fixedUpdatable);
+        fixedToAdd.Add(fixedUpdatable);
     }
+
     public void RemoveFixedUpdatable(IFixedUpdatable fixedUpdatable)
     {
-        fixedUpdatables.Remove(fixedUpdatable);
+        fixedToRemove.Add(fixedUpdatable);
     }
 }

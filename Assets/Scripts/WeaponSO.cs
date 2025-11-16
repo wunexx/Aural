@@ -7,11 +7,12 @@ public class WeaponSO : ScriptableObject
     public Sprite sprite;
 
     [Header("Shooting")]
-    public float damage;
-    public float cooldown;
-    public float scatter;
+    public float damage = 10f;
+    public float cooldown = 0.5f;
+    public float scatter = 5f;
 
     [Header("Projectile")]
-    public float projectileForce;
     public GameObject projectilePrefab;
+    public float projectileSpeed = 10f;
+    public float projectileLifetime = 3f;
 }

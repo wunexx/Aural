@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92231b9207be15944bf0e87146fa41db, type: 3}
+  m_Name: EnvironmentSet
+  m_EditorClassIdentifier: Assembly-CSharp::EnvironmentSet
+  environmentType: 0
+  startRooms:
+  - {fileID: 6388633524580203067, guid: a9675f78a2673cb4e927aea853ac199d, type: 3}
+  - {fileID: 1554341963655509423, guid: 40fa6f2b932abc5449a8fab5f541d0fd, type: 3}
+  - {fileID: 671299001917870863, guid: 938454fca4f6dce4792dd68d6b8c6e87, type: 3}
+  - {fileID: 1962060199771883406, guid: d0c7c79a26b04374ab0c68cf44b45029, type: 3}
+  enemyRooms:
+  - {fileID: 2685110500632614328, guid: aaf4f0fa5aaa9634bbaefab81727096a, type: 3}
+  - {fileID: 1534521223823156683, guid: fed6c459601fe2c4c91b91508703f718, type: 3}
+  - {fileID: 5206433050069186503, guid: a5d03ea18c8d3bc42be0a6168e7a0c09, type: 3}
+  - {fileID: 1223120315715567937, guid: 841b463edaa1e804280e2e2ba27c0949, type: 3}
+  - {fileID: 5155335646899738877, guid: f16ab6bd29e07374f83f8dfd7de07e4b, type: 3}
+  - {fileID: 2716180571372092001, guid: 975e539e0ba21cc429c53f20eeb9be5c, type: 3}
+  chestRooms:
+  - {fileID: 2685110500632614328, guid: 75d749122a0e02f4fa11e9c042c4ba19, type: 3}
+  - {fileID: 1534521223823156683, guid: 4497413011bd27d4eadd5daa4ebae13f, type: 3}
+  - {fileID: 5206433050069186503, guid: 3d3c4abeba0a5e04c9a95486b883c6ca, type: 3}
+  - {fileID: 1223120315715567937, guid: d234155d11c624540b453307e5b3f408, type: 3}
+  - {fileID: 5155335646899738877, guid: 6c1357cc4f073cc45b652e63be5f02be, type: 3}
+  - {fileID: 2716180571372092001, guid: 96fa0ed789cccb54a8a5227f3ed100c4, type: 3}
+  specialRooms:
+  - {fileID: 2685110500632614328, guid: 4a5a2b28ff1b36b43b636d694e49349f, type: 3}
+  - {fileID: 1534521223823156683, guid: 4185a09b403fa2e47936edf07dc845dc, type: 3}
+  - {fileID: 5206433050069186503, guid: 8965c1e502e3e0441b25d5abd6bdffd4, type: 3}
+  - {fileID: 1223120315715567937, guid: a4e97e41a72e6cd429b542a973887936, type: 3}
+  - {fileID: 5155335646899738877, guid: 3831f970e22b9dc42bce9662260490a4, type: 3}
+  - {fileID: 2716180571372092001, guid: 0c578cd9d2a004f46bbc8897ac97e827, type: 3}
+  bossRooms:
+  - {fileID: 6388633524580203067, guid: 74d6340e950a48643b964a890e3e604c, type: 3}
+  - {fileID: 1554341963655509423, guid: 28873b28677bd4e4cabc17f04668e1c2, type: 3}
+  - {fileID: 671299001917870863, guid: 715b0b7144acfc543be9254f9fc3e781, type: 3}
+  - {fileID: 1962060199771883406, guid: 70d822071a372bb45a7d58b58795486a, type: 3}

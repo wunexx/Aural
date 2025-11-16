@@ -13,6 +13,9 @@ public class WeaponInteractable : MonoBehaviour, IInteractable
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if(weapon)
+            spriteRenderer.sprite = weapon.sprite;
     }
     void Start()
     {
