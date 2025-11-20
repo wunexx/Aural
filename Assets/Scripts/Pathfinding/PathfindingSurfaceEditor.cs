@@ -13,7 +13,8 @@ public class PathfindingSurfaceEditor : Editor
 
         if(GUILayout.Button("Update Grid"))
         {
-            ps.UpdateGrid();
+            ps.UpdateTilemapGrid();
+            ps.UpdateFullObstacleGrid();
 
             //to save changes
             EditorUtility.SetDirty(ps);

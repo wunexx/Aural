@@ -13,6 +13,8 @@ public class DungeonGenerator : MonoBehaviour
 
     [SerializeField] PathfindingSurface pathfindingSurface;
 
+    [SerializeField] UpdateManager updateManager;
+
     Dictionary<Vector2, Room> createdRooms;
     List<Vector2> placementOrder;
 
@@ -30,6 +32,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         CleanDungeon();
         pathfindingSurface.ClearTilemaps();
+        pathfindingSurface.ClearObstacles();
 
         createdRooms = new Dictionary<Vector2, Room>();
         placementOrder = new List<Vector2>();
@@ -51,10 +54,8 @@ public class DungeonGenerator : MonoBehaviour
                     GameObject roomObj = GetRandomRoom(environmentSet.GetRoomListByType(RoomType.Start)).gameObject;
                     Room room = Instantiate(roomObj, transform.position, Quaternion.identity).GetComponent<Room>();
 
-                    Tilemap tilemap = room.transform.Find("Walls").GetComponent<Tilemap>();
-
-                    if (tilemap != null)
-                        pathfindingSurface.AddTilemap(tilemap);
+                    AddRoomToPathfindingSurface(room);
+                    room.InitAgents(pathfindingSurface, updateManager);
 
                     createdRooms.Add(transform.position, room);
                     placementOrder.Add(transform.position);
@@ -97,10 +98,8 @@ public class DungeonGenerator : MonoBehaviour
 
                         Room room = Instantiate(roomToPlace.gameObject, pos, Quaternion.identity).GetComponent<Room>();
 
-                        Tilemap tilemap = room.transform.Find("Walls").GetComponent<Tilemap>();
-
-                        if (tilemap != null)
-                            pathfindingSurface.AddTilemap(tilemap);
+                        AddRoomToPathfindingSurface(room);
+                        room.InitAgents(pathfindingSurface, updateManager);
 
                         lastRoom.MarkDoorAsConnected(dir);
                         room.MarkDoorAsConnected(oppDir);
@@ -112,7 +111,7 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
         SetupPathfindingSurface();
-        pathfindingSurface.UpdateGrid();
+        pathfindingSurface.UpdateTilemapGrid();
     }
 
     public void SetupPathfindingSurface()
@@ -161,7 +160,18 @@ public class DungeonGenerator : MonoBehaviour
         return true;
     }
 
+    void AddRoomToPathfindingSurface(Room room)
+    {
+        Tilemap tilemap = room.transform.Find("Walls").GetComponent<Tilemap>();
 
+        if (tilemap != null)
+            pathfindingSurface.AddTilemap(tilemap);
+
+        foreach(var door in room.doors)
+        {
+            door.Init(pathfindingSurface);
+        }
+    }
     public Room GetRandomRoomByDir(List<Room> rooms, DoorDirection dir)
     {
         List<Room> roomsWithDir = new List<Room>();

@@ -875,6 +875,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9ec0b653fe0d18445a0e3529d77f204e, type: 2}
   roomSize: {x: 16, y: 16}
   pathfindingSurface: {fileID: 1385072017}
+  updateManager: {fileID: 1040614010}
 --- !u!4 &883892576
 Transform:
   m_ObjectHideFlags: 0

@@ -9,20 +9,36 @@ public enum DoorDirection
     None
 }
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IObstacle
 {
     [SerializeField] DoorDirection direction;
     bool isConnected = false;
     Collider2D _collider;
     SpriteRenderer spriteRenderer;
 
-    private void Start()
+    PathfindingSurface pathfindingSurface;
+
+    private void Awake()
     {
         _collider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
+    private void Start()
+    {
         Open();
     }
+
+    public Vector2 GetDoorSize()
+    {
+        return _collider.bounds.size;
+    }
+
+    public void Init(PathfindingSurface _pathfindingSurface)
+    {
+        pathfindingSurface = _pathfindingSurface;
+    }
+
     public DoorDirection GetDoorDirection()
     {
         return direction;
@@ -39,11 +55,13 @@ public class Door : MonoBehaviour
     {
         _collider.enabled = false;
         spriteRenderer.enabled = false;
+        pathfindingSurface.UpdateObstacle(gameObject, true);
     }
 
     public void Close()
     {
         _collider.enabled = true;
         spriteRenderer.enabled = true;
+        pathfindingSurface.UpdateObstacle(gameObject, false);
     }
 }

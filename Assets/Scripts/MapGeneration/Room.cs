@@ -15,6 +15,8 @@ public class Room : MonoBehaviour
     public Door[] doors;
     [SerializeField] RoomType roomType;
 
+    [SerializeField] PathfindingAgent[] agents;
+
     //add array with all enemies, when there will be any xD
 
     bool isCleared = false;
@@ -22,6 +24,15 @@ public class Room : MonoBehaviour
     {
         isCleared = false;
     }
+
+    public void InitAgents(PathfindingSurface ps, UpdateManager um)
+    {
+        foreach (var agent in agents)
+        {
+            agent.Init(ps, um);
+        }
+    }
+
     public bool HasDoor(DoorDirection dir)
     {
         foreach (var door in doors)
@@ -34,7 +45,7 @@ public class Room : MonoBehaviour
 
     public void MarkDoorAsConnected(DoorDirection dir)
     {
-        foreach(var door in doors)
+        foreach (var door in doors)
         {
             if (door.GetDoorDirection() == dir)
             {
@@ -56,7 +67,7 @@ public class Room : MonoBehaviour
 
     public bool HasUnconnectedDoors()
     {
-        foreach(var door in doors)
+        foreach (var door in doors)
         {
             if (door.GetIsConnected() == false)
                 return true;
@@ -90,6 +101,6 @@ public class Room : MonoBehaviour
     }
     void OnEnemyKilled() //will check if the enemy that was killed is the last one, if it was open all doors and mark room as cleared
     {
-
+        
     }
 }

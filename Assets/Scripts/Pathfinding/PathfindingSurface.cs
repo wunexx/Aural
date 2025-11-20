@@ -1,8 +1,11 @@
 using System.Collections.Generic;
-using TreeEditor;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+
+public interface IObstacle
+{
+    public void Init(PathfindingSurface _pathfindingSurface);
+}
 
 public class PathfindingSurface : MonoBehaviour
 {
@@ -12,36 +15,150 @@ public class PathfindingSurface : MonoBehaviour
 
     [SerializeField] bool drawGizmos = false;
 
+    List<Collider2D> obstacles = new List<Collider2D>();
     List<Tilemap> tilemaps = new List<Tilemap>();
 
-    bool[,] walkable;
-    private void Start()
+
+    bool[,] tilemapGrid; //true = walkable, false = not walkable. Goes for all 3 arrays
+    bool[,] obstacleGrid;
+    bool[,] finalGrid;
+
+    public bool[,] GetGrid() => finalGrid;
+
+    public bool IsCellWalkable(Vector2Int cell)
     {
-        walkable = new bool[width, height];
-        UpdateGrid();
+        return finalGrid[cell.x, cell.y];
     }
 
-    public void UpdateGrid()
+    public List<Vector2Int> GetNeighbors(Vector2Int pos)
     {
-        if (walkable == null || walkable.GetLength(0) != width || walkable.GetLength(1) != height)
-            walkable = new bool[width, height];
+        List<Vector2Int> neighbors = new List<Vector2Int>();
 
-        for (int x = 0; x < walkable.GetLength(0); x++)
+
+        List<Vector2Int> dirs = new List<Vector2Int>
         {
-            for (int y = 0; y < walkable.GetLength(1); y++)
+            new Vector2Int(1, 0),
+            new Vector2Int(-1, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(0, -1),
+
+            new Vector2Int(1, 1),
+            new Vector2Int(-1, 1),
+            new Vector2Int(-1, -1),
+            new Vector2Int(1, -1)
+        };
+
+        foreach (var dir in dirs)
+        {
+            Vector2Int newPos = pos + dir;
+
+            if (newPos.x < 0 || newPos.y < 0 ||
+                newPos.x >= finalGrid.GetLength(0) || newPos.y >= finalGrid.GetLength(1))
+                continue;
+
+            if (dir.x != 0 && dir.y != 0)
             {
-                walkable[x, y] = IsCellWalkable(GetCellWorldOrigin(x, y));
+                Vector2Int cell1 = new Vector2Int(pos.x + dir.x, pos.y);
+                Vector2Int cell2 = new Vector2Int(pos.x, pos.y + dir.y);
+
+                if (!IsCellWalkable(cell1) || !IsCellWalkable(cell2))
+                    continue;
+            }
+
+            neighbors.Add(newPos);
+        }
+
+        return neighbors;
+    }
+
+    public void MergeGrids()
+    {
+        finalGrid = new bool[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                finalGrid[x, y] = tilemapGrid[x, y] && obstacleGrid[x, y];
             }
         }
+    }
+
+    public void UpdateTilemapGrid()
+    {
+        CreateTilemapGrid();
+
+        for (int x = 0; x < tilemapGrid.GetLength(0); x++)
+        {
+            for (int y = 0; y < tilemapGrid.GetLength(1); y++)
+            {
+                tilemapGrid[x, y] = DoesCellContainTile(GetCellWorldOrigin(x, y));
+            }
+        }
+
+        //Debug.Log(tilemapGrid);
+        MergeGrids();
+    }
+
+    public void UpdateFullObstacleGrid()
+    {
+        CreateObstacleGrid();
+
+        foreach (var obstacle in obstacles)
+        {
+            UpdateObstacleGrid(obstacle, true);
+        }
+
+        //Debug.Log(obstacleGrid);
+        MergeGrids();
     }
 
     public void ClearTilemaps()
     {
         tilemaps.Clear();
-        walkable = new bool[width, height];
+        CreateTilemapGrid();
     }
 
-    bool IsCellWalkable(Vector2 worldPos)
+    public void ClearObstacles()
+    {
+        obstacles.Clear();
+        CreateObstacleGrid();
+    }
+
+    void CreateGrid()
+    {
+        CreateTilemapGrid();
+        CreateObstacleGrid();
+
+        MergeGrids();
+    }
+    void CreateTilemapGrid()
+    {
+        tilemapGrid = new bool[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                tilemapGrid[x, y] = true;
+            }
+        }
+    }
+    void CreateObstacleGrid()
+    {
+        obstacleGrid = new bool[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                obstacleGrid[x, y] = true;
+            }
+        }
+    }
+
+
+    bool DoesCellContainTile(Vector2 worldPos)
     {
         foreach (var tilemap in tilemaps)
         {
@@ -52,6 +169,62 @@ public class PathfindingSurface : MonoBehaviour
         return true;
     }
 
+    public void UpdateObstacle(GameObject obstacle, bool state)
+    {
+        Collider2D col = obstacle.GetComponent<Collider2D>();
+
+        if (state && !obstacles.Contains(col))
+            obstacles.Add(col);
+        else if (!state && obstacles.Contains(col))
+            obstacles.Remove(col);
+
+        UpdateObstacleGrid(col, state);
+    }
+
+    void UpdateObstacleGrid(Collider2D collider, bool state)
+    {
+        Vector2Int size = GetObstacleSizeInCells(collider.bounds.size);
+
+        int halfX = Mathf.CeilToInt(size.x * 0.5f);
+        int halfY = Mathf.CeilToInt(size.y * 0.5f);
+
+        if (!TryGetWorldCell(collider.bounds.center, out Vector2Int cell)) return;
+
+        for (int x = -halfX; x < halfX; x++)
+        {
+            for (int y = -halfY; y < halfY; y++)
+            {
+                int gx = cell.x + x;
+                int gy = cell.y + y;
+
+                if (gx < 0 || gy < 0 || gx >= width || gy >= height)
+                    continue;
+
+                obstacleGrid[gx, gy] = state;
+            }
+        }
+
+        MergeGrids();
+    }
+
+    Vector2Int GetObstacleSizeInCells(Vector2 obstacleSize)
+    {
+        return new Vector2Int(Mathf.CeilToInt(obstacleSize.x / cellSize), Mathf.CeilToInt(obstacleSize.y / cellSize));
+    }
+
+    public bool TryGetWorldCell(Vector2 worldPos, out Vector2Int cell)
+    {
+        Vector2 local = worldPos - GetGridOrigin();
+
+        int gx = Mathf.FloorToInt(local.x / cellSize);
+        int gy = Mathf.FloorToInt(local.y / cellSize);
+
+        bool inside = gx >= 0 && gy >= 0 && gx < width && gy < height;
+
+        cell = new Vector2Int(gx, gy);
+        return inside;
+    }
+
     public void SetPosAndSize(Vector2 pos, Vector2 worldSize)
     {
         transform.position = pos;
@@ -59,7 +232,7 @@ public class PathfindingSurface : MonoBehaviour
         width = Mathf.CeilToInt(worldSize.x / cellSize);
         height = Mathf.CeilToInt(worldSize.y / cellSize);
 
-        walkable = new bool[width, height];
+        CreateGrid();
     }
 
     public void AddTilemap(Tilemap tilemap)
@@ -72,8 +245,12 @@ public class PathfindingSurface : MonoBehaviour
 
     public Vector2 GetCellWorldOrigin(int gridX, int gridY)
     {
-        Vector2 origin = (Vector2)transform.position - new Vector2(width, height) * 0.5f * cellSize;
-        return origin + new Vector2(gridX * cellSize, gridY * cellSize);
+        return GetGridOrigin() + new Vector2(gridX * cellSize, gridY * cellSize);
+    }
+
+    public Vector2 GetGridOrigin()
+    {
+        return (Vector2)transform.position - new Vector2(width, height) * 0.5f * cellSize;
     }
 
     public Vector2 GetCellWorldCenter(int gridX, int gridY)
@@ -82,23 +259,22 @@ public class PathfindingSurface : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnValidate()
-    {
-        walkable = new bool[width, height];
-    }
     private void OnDrawGizmos()
     {
-        if (!drawGizmos) return;
+        if (!drawGizmos || !Application.isPlaying) return;
 
-        for (int x = 0; x < walkable.GetLength(0); x++)
+        for (int x = 0; x < finalGrid.GetLength(0); x++)
         {
-            for (int y = 0; y < walkable.GetLength(1); y++)
+            for (int y = 0; y < finalGrid.GetLength(1); y++)
             {
                 Vector3 pos = GetCellWorldCenter(x, y);
 
-                Gizmos.color = walkable[x, y] ? Color.green : Color.red;
+                Gizmos.color = finalGrid[x, y] ? Color.green : Color.red;
 
                 Gizmos.DrawWireCube(pos, Vector3.one * cellSize);
+
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawSphere(GetCellWorldCenter(x, y), 0.1f);
             }
         }
     }
