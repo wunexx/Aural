@@ -15,22 +15,39 @@ public class Room : MonoBehaviour
     public Door[] doors;
     [SerializeField] RoomType roomType;
 
-    [SerializeField] PathfindingAgent[] agents;
-
-    //add array with all enemies, when there will be any xD
+    [SerializeField] List<EnemyBrainBase> enemies;
 
     bool isCleared = false;
     private void Start()
     {
+
         isCleared = false;
+    }
+
+    List<PathfindingAgent> GetPathfindingAgents()
+    {
+        List<PathfindingAgent> agents = new List<PathfindingAgent>();
+
+        foreach (var enemy in enemies)
+        {
+            PathfindingAgent pa = enemy.GetComponent<PathfindingAgent>();
+
+            if (pa != null)
+                agents.Add(pa);
+        }
+
+        return agents;
     }
 
     public void InitAgents(PathfindingSurface ps, UpdateManager um)
     {
+        List<PathfindingAgent> agents = GetPathfindingAgents();
+
         foreach (var agent in agents)
-        {
             agent.Init(ps, um);
-        }
+
+        foreach (var enemy in enemies)
+            enemy.Init(um, this);
     }
 
     public bool HasDoor(DoorDirection dir)
@@ -82,25 +99,36 @@ public class Room : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && isCleared == false)
+        if (collision.CompareTag("Player") && isCleared == false && roomType != RoomType.Start && enemies.Count > 0)
         {
             CloseAllDoors();
-            EnableEnemies();
+            EnableEnemies(collision.gameObject);
         }
     }
-    void EnableEnemies()
+    void EnableEnemies(GameObject target)
     {
-        //enables enemy ais
+        foreach (var enemy in enemies)
+            enemy.InitTarget(target);
     }
     void CloseAllDoors()
     {
         foreach (var door in doors)
-        {
             door.Close();
-        }
     }
-    void OnEnemyKilled() //will check if the enemy that was killed is the last one, if it was open all doors and mark room as cleared
+    void OpenAllDoors() 
     {
-        
+        foreach (var door in doors)
+            door.Open();
+    }
+    public void OnEnemyKilled(EnemyBrainBase enemy)
+    {
+        if (enemies.Contains(enemy))
+            enemies.Remove(enemy);
+
+        if(enemies.Count <= 0)
+        {
+            OpenAllDoors();
+            isCleared = true;
+        }
     }
 }

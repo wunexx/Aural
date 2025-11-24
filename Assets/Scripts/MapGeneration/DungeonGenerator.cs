@@ -11,6 +11,7 @@ public class DungeonGenerator : MonoBehaviour
 
     [SerializeField] Vector2 roomSize;
 
+    [Header("References")]
     [SerializeField] PathfindingSurface pathfindingSurface;
 
     [SerializeField] UpdateManager updateManager;

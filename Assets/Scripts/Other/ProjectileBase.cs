@@ -1,0 +1,83 @@
+using UnityEngine;
+
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
+public abstract class ProjectileBase : MonoBehaviour, IFixedUpdatable
+{
+    [Tooltip("Decides who is the target of projectile")]
+    [SerializeField] protected bool playerProjectile = false;
+
+    protected float damage;
+    protected float speed;
+    protected float lifetime;
+
+    protected Rigidbody2D rb;
+
+    protected float timeAlive;
+    protected Vector2 startingPos;
+    protected Vector2 shootDirection;
+    protected UpdateManager updateManager;
+
+    [Header("Sprites")]
+    [SerializeField] protected Sprite[] sprites;
+
+    protected string targetTag;
+
+    protected SpriteRenderer spriteRenderer;
+
+    protected virtual void OnDisable()
+    {
+        if (updateManager != null)
+            updateManager.RemoveFixedUpdatable(this);
+    }
+
+    public virtual void Init(Vector2 dir, UpdateManager um, float s, float l, float d)
+    {
+        rb = GetComponent<Rigidbody2D>();
+
+        updateManager = um;
+        um.AddFixedUpdatable(this);
+
+        startingPos = transform.position;
+        shootDirection = dir;
+
+        damage = d;
+        speed = s;
+        lifetime = l;
+    }
+
+    protected virtual void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (sprites.Length > 0)
+            spriteRenderer.sprite = sprites[Random.Range(0, sprites.Length)];
+
+        targetTag = playerProjectile ? "Enemy" : "Player";
+
+        string layer = playerProjectile ? "PlayerProjectile" : "EnemyProjectile";
+
+        gameObject.layer = LayerMask.NameToLayer(layer);
+    }
+
+    public virtual void OnFixedUpdate()
+    {
+        timeAlive += Time.fixedDeltaTime;
+
+        if (timeAlive >= lifetime)
+            Destroy(gameObject);
+    }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag(targetTag))
+        {
+            HealthBase health = collision.gameObject.GetComponent<HealthBase>();
+
+            //Debug.Log("Target: " + health.name + " Damage: " + damage);
+
+            health.TakeDamage(damage);
+        }
+        Destroy(gameObject);
+    }
+}

@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour, IUpdatable, IFixedUpdatable
     [Header("References")]
     [SerializeField] UpdateManager updateManager;
 
+    Animator animator;
     Rigidbody2D rb;
     Vector2 input;
 
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour, IUpdatable, IFixedUpdatable
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -45,6 +47,8 @@ public class PlayerMovement : MonoBehaviour, IUpdatable, IFixedUpdatable
     public void OnUpdate()
     {
         input = PlayerInputController.Instance.GetMovementInput();
+
+        animator.SetFloat("movement", input.magnitude);
 
         if (dashCooldownTimer > 0f)
             dashCooldownTimer -= Time.deltaTime;

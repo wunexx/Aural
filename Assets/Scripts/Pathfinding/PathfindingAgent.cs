@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -18,10 +17,53 @@ public class PathfindingAgent : MonoBehaviour, IFixedUpdatable
     PathfindingSurface pathfindingSurface;
     UpdateManager updateManager;
     Rigidbody2D rb;
+
+    void OnDestroy() => updateManager.RemoveFixedUpdatable(this);
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
+
+    public void ClearPath()
+    {
+        currentPath.Clear();
+        pathIndex = 0;
+    }
+
+    public bool HasPath() => currentPath.Count > 0;
+
+    public Vector2 GetRandomWalkableTile(int radius, Vector2 anchor)
+    {
+        if (!pathfindingSurface.TryGetWorldCell(anchor, out Vector2Int cell))
+            return Vector2.zero;
+
+        List<Vector2Int> availableCells = new List<Vector2Int>();
+
+        for (int x = -radius; x < radius; x++)
+        {
+            for (int y = -radius; y < radius; y++)
+            {
+                int gx = cell.x + x;
+                int gy = cell.y + y;
+
+                Vector2Int pos = new Vector2Int(gx, gy);
+
+                if (pathfindingSurface.IsCellWalkable(pos))
+                   availableCells.Add(pos);
+            }
+        }
+
+        if (availableCells.Count <= 0)
+            return Vector2.zero;
+
+        Vector2Int finalCell = availableCells[Random.Range(0, availableCells.Count)];
+
+        Vector2 finalPos = pathfindingSurface.GetCellWorldCenter(finalCell.x, finalCell.y);
+
+        return finalPos;
+    }
+
     public void SetDestination(Vector2 destination)
     {
         if (!pathfindingSurface)
@@ -30,7 +72,11 @@ public class PathfindingAgent : MonoBehaviour, IFixedUpdatable
             return;
         }
 
+        //Debug.Log(destination);
+
         List<Vector2Int> path = GetPath(transform.position, destination);
+
+        //Debug.Log(path.Count);
 
         currentPath.Clear();
         pathIndex = 0;
@@ -39,17 +85,31 @@ public class PathfindingAgent : MonoBehaviour, IFixedUpdatable
             currentPath.Add(pathfindingSurface.GetCellWorldCenter(pos.x, pos.y));
     }
 
+    public UpdateManager GetUpdateManager() => updateManager;
+
     public void OnFixedUpdate()
     {
         if (currentPath.Count <= 0 || pathIndex >= currentPath.Count)
             return;
 
         Vector2 target = currentPath[pathIndex];
-        Vector2 newPos = Vector2.MoveTowards(rb.position, target, moveSpeed * Time.fixedDeltaTime);
+
+        Vector2 newPos = rb.position;
+
+        newPos = Vector2.MoveTowards(rb.position, target, moveSpeed * Time.fixedDeltaTime);
+
         rb.MovePosition(newPos);
 
-        if (Vector2.Distance(transform.position, target) < 0.05f)
+        if (Vector2.Distance(rb.position, target) < 0.05f)
+        {
             pathIndex++;
+
+            if (pathIndex >= currentPath.Count)
+            {
+                currentPath.Clear();
+                pathIndex = 0;
+            }
+        }
     }
 
     public void Init(PathfindingSurface ps, UpdateManager um)
@@ -68,6 +128,7 @@ public class PathfindingAgent : MonoBehaviour, IFixedUpdatable
             Debug.LogWarning("Conversion from world pos to cell failed!");
             return new List<Vector2Int>();
         }
+
 
         HashSet<Vector2Int> closedSet = new HashSet<Vector2Int>();
         List<Node> openSet = new List<Node>();

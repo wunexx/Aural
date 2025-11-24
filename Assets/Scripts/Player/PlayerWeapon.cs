@@ -68,13 +68,16 @@ public class PlayerWeapon : MonoBehaviour, IUpdatable
     }
     void Shoot()
     {
-        float scatterAngle = Random.Range(-currentWeapon.scatter, currentWeapon.scatter);
-        Vector2 scatterDir = Quaternion.Euler(0, 0, scatterAngle) * firepoint.right;
+        for (int i = 0; i < currentWeapon.projectilesPerShot; i++)
+        {
+            float scatterAngle = Random.Range(-currentWeapon.scatter, currentWeapon.scatter);
+            Vector2 scatterDir = (Quaternion.Euler(0, 0, scatterAngle) * firepoint.right).normalized;
 
-        float angle = Mathf.Atan2(scatterDir.y, scatterDir.x) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(scatterDir.y, scatterDir.x) * Mathf.Rad2Deg;
 
-        IProjectile projectile = Instantiate(currentWeapon.projectilePrefab, firepoint.position, Quaternion.Euler(0, 0, angle)).GetComponent<IProjectile>();
+            ProjectileBase projectile = Instantiate(currentWeapon.projectilePrefab, firepoint.position, Quaternion.Euler(0, 0, angle)).GetComponent<ProjectileBase>();
 
-        projectile.Init(scatterDir, updateManager, currentWeapon.projectileSpeed, currentWeapon.projectileLifetime);
+            projectile.Init(scatterDir, updateManager, currentWeapon.projectileSpeed, currentWeapon.projectileLifetime, currentWeapon.damage);
+        }
     }
 }

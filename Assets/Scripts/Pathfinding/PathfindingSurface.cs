@@ -185,17 +185,18 @@ public class PathfindingSurface : MonoBehaviour
     {
         Vector2Int size = GetObstacleSizeInCells(collider.bounds.size);
 
-        int halfX = Mathf.CeilToInt(size.x * 0.5f);
-        int halfY = Mathf.CeilToInt(size.y * 0.5f);
+        if (!TryGetWorldCell(collider.bounds.center, out Vector2Int cell))
+            return;
 
-        if (!TryGetWorldCell(collider.bounds.center, out Vector2Int cell)) return;
+        int startX = cell.x - size.x / 2;
+        int startY = cell.y - size.y / 2;
 
-        for (int x = -halfX; x < halfX; x++)
+        for (int x = 0; x < size.x; x++)
         {
-            for (int y = -halfY; y < halfY; y++)
+            for (int y = 0; y < size.y; y++)
             {
-                int gx = cell.x + x;
-                int gy = cell.y + y;
+                int gx = startX + x;
+                int gy = startY + y;
 
                 if (gx < 0 || gy < 0 || gx >= width || gy >= height)
                     continue;
@@ -271,7 +272,7 @@ public class PathfindingSurface : MonoBehaviour
 
                 Gizmos.color = finalGrid[x, y] ? Color.green : Color.red;
 
-                Gizmos.DrawWireCube(pos, Vector3.one * cellSize);
+                Gizmos.DrawWireCube(pos, Vector3.one * cellSize * 0.99f);
 
                 Gizmos.color = Color.magenta;
                 Gizmos.DrawSphere(GetCellWorldCenter(x, y), 0.1f);

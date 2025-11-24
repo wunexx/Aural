@@ -90,7 +90,7 @@ public class PlayerWeaponInventory : MonoBehaviour, IUpdatable
         if (scrollProcessed) return;
 
         scrollProcessed = true;
-        int direction = scrollInput.y > 0 ? 1 : -1;
+        int direction = scrollInput.y > 0 ? -1 : 1;
         SwitchWeapon(direction);
     }
     void SelectWeapon(int index)
