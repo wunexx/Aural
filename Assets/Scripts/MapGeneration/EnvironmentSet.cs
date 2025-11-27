@@ -3,8 +3,8 @@ using UnityEngine;
 
 public enum EnvironmentType
 {
-    Environment1,
-    Environment2,
+    RootPath,
+    DuneTemple,
     Environment3
 }
 
@@ -12,6 +12,8 @@ public enum EnvironmentType
 public class EnvironmentSet : ScriptableObject
 {
     public EnvironmentType environmentType;
+
+    public Color bgColor;
 
     [Header("Rooms")]
     public List<Room> startRooms;

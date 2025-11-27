@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using Unity.VisualScripting;
@@ -13,24 +14,42 @@ public class DungeonGenerator : MonoBehaviour
 
     [Header("References")]
     [SerializeField] PathfindingSurface pathfindingSurface;
+    [SerializeField] Camera _camera;
+    [SerializeField] SceneTransition sceneTransition;
+    [SerializeField] Transform player;
+
 
     [SerializeField] UpdateManager updateManager;
 
     Dictionary<Vector2, Room> createdRooms;
     List<Vector2> placementOrder;
 
+    int generateCount = 0;
+
     private void Start()
     {
-        GenerateDungeon(EnvironmentType.Environment1);
+        StartCoroutine(GenerateDungeon(EnvironmentType.DuneTemple));
     }
-
+#if UNITY_EDITOR
     public void GenerateFuncForButton() //only for testing
     {
-        GenerateDungeon(EnvironmentType.Environment1);
+        StartCoroutine(GenerateDungeon(EnvironmentType.RootPath));
     }
-
-    public void GenerateDungeon(EnvironmentType environmentType)
+#endif
+    public IEnumerator GenerateDungeon(EnvironmentType environmentType)
     {
+        generateCount++;
+
+        if (generateCount > 1)
+        {
+            sceneTransition.OnDungeonGenerate();
+
+            //for scene transition
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        player.transform.position = transform.position;
+
         CleanDungeon();
         pathfindingSurface.ClearTilemaps();
         pathfindingSurface.ClearObstacles();
@@ -43,8 +62,10 @@ public class DungeonGenerator : MonoBehaviour
         if(environmentSet == null)
         {
             Debug.LogWarning("Environment Set not found !!!");
-            return;
+            yield break;
         }
+
+        _camera.backgroundColor = environmentSet.bgColor;
 
         for (int i = 0; i < dungeonFlow.steps.Count; i++)
         {
@@ -87,7 +108,7 @@ public class DungeonGenerator : MonoBehaviour
                         if (validPrefabs.Count == 0)
                         {
                             Debug.LogWarning("No valid room fits at " + pos);
-                            return;
+                            yield break;
                         }
                         Room roomToPlace = GetRandomRoom(validPrefabs);
 
@@ -163,10 +184,21 @@ public class DungeonGenerator : MonoBehaviour
 
     void AddRoomToPathfindingSurface(Room room)
     {
-        Tilemap tilemap = room.transform.Find("Walls").GetComponent<Tilemap>();
+        Transform grid = room.transform.Find("Tilemaps");
+        if (grid == null)
+        {
+            Debug.LogError("No tilemaps child found on room: " + room.name);
+            return;
+        }
 
-        if (tilemap != null)
-            pathfindingSurface.AddTilemap(tilemap);
+        Tilemap tilemap = grid.Find("Walls")?.GetComponent<Tilemap>();
+        if (tilemap == null)
+        {
+            Debug.LogError("No Walls tilemap found under Grid in room: " + room.name);
+            return;
+        }
+
+        pathfindingSurface.AddTilemap(tilemap);
 
         foreach(var door in room.doors)
         {

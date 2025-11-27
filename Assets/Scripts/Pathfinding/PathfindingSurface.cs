@@ -11,7 +11,7 @@ public class PathfindingSurface : MonoBehaviour
 {
     [SerializeField, Min(1)] int width = 1, height = 1;
 
-    [SerializeField, Min(1)] float cellSize = 1;
+    [SerializeField, Min(0)] float cellSize = 1;
 
     [SerializeField] bool drawGizmos = false;
 

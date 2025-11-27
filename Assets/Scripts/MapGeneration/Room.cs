@@ -10,6 +10,8 @@ public enum RoomType
     Special,
     Boss
 }
+
+[RequireComponent(typeof(Collider2D))]
 public class Room : MonoBehaviour
 {
     public Door[] doors;
@@ -17,9 +19,14 @@ public class Room : MonoBehaviour
 
     [SerializeField] List<EnemyBrainBase> enemies;
 
+    Collider2D col;
+
     bool isCleared = false;
     private void Start()
     {
+        col = GetComponent<Collider2D>();
+        if (enemies.Count <= 0)
+            col.enabled = false;
 
         isCleared = false;
     }
@@ -103,6 +110,7 @@ public class Room : MonoBehaviour
         {
             CloseAllDoors();
             EnableEnemies(collision.gameObject);
+            col.enabled = false;
         }
     }
     void EnableEnemies(GameObject target)

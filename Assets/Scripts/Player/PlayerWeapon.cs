@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerWeapon : MonoBehaviour, IUpdatable
+public class PlayerWeapon : PlayerComponentBase, IUpdatable
 {
     [Header("References")]
     [SerializeField] UpdateManager updateManager;

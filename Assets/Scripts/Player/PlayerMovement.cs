@@ -1,8 +1,8 @@
+using UnityEditor.Tilemaps;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMovement : MonoBehaviour, IUpdatable, IFixedUpdatable
+public class PlayerMovement : PlayerComponentBase, IUpdatable, IFixedUpdatable
 {
     [Header("Movement")]
     [SerializeField] float moveSpeed = 5f;
@@ -14,7 +14,6 @@ public class PlayerMovement : MonoBehaviour, IUpdatable, IFixedUpdatable
 
     [Header("References")]
     [SerializeField] UpdateManager updateManager;
-
     Animator animator;
     Rigidbody2D rb;
     Vector2 input;
@@ -78,5 +77,12 @@ public class PlayerMovement : MonoBehaviour, IUpdatable, IFixedUpdatable
         dashTimer = dashDuration;
 
         dashDirection = input.sqrMagnitude > 0 ? input : transform.right;
+    }
+
+    public override void OnPlayerDeath()
+    {
+        rb.linearVelocity = Vector2.zero;
+
+        base.OnPlayerDeath();
     }
 }

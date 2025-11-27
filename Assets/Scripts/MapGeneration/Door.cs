@@ -15,6 +15,8 @@ public class Door : MonoBehaviour, IObstacle
     bool isConnected = false;
     Collider2D _collider;
     SpriteRenderer spriteRenderer;
+    Animator animator;
+
 
     PathfindingSurface pathfindingSurface;
 
@@ -22,6 +24,7 @@ public class Door : MonoBehaviour, IObstacle
     {
         _collider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -54,14 +57,16 @@ public class Door : MonoBehaviour, IObstacle
     public void Open()
     {
         _collider.enabled = false;
-        spriteRenderer.enabled = false;
+        //spriteRenderer.enabled = false;
         pathfindingSurface.UpdateObstacle(gameObject, true);
+        animator.SetTrigger("Open");
     }
 
     public void Close()
     {
         _collider.enabled = true;
-        spriteRenderer.enabled = true;
+        //spriteRenderer.enabled = true;
         pathfindingSurface.UpdateObstacle(gameObject, false);
+        animator.SetTrigger("Close");
     }
 }

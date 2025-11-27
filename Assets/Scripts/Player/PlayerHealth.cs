@@ -4,8 +4,13 @@ using UnityEngine.UI;
 
 public class PlayerHealth : HealthBase
 {
+    [Header("Health UI")]
     [SerializeField] Slider healthSlider;
     [SerializeField] TextMeshProUGUI healthText;
+
+    [Header("Other References")]
+    [SerializeField] GameObject deathScreenObj;
+    [SerializeField] PlayerComponentBase[] playerComponents;
 
     float initialHealth;
 
@@ -27,6 +32,11 @@ public class PlayerHealth : HealthBase
     protected override void OnDeath()
     {
         base.OnDeath();
+
+        foreach (var c in playerComponents)
+            c.OnPlayerDeath();
+
+        deathScreenObj.SetActive(true);
         UpdateUI();
     }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class PlayerWeaponInventory : MonoBehaviour, IUpdatable
+public class PlayerWeaponInventory : PlayerComponentBase, IUpdatable
 {
     [Header("Settings")]
     [SerializeField] private int inventorySize = 3;

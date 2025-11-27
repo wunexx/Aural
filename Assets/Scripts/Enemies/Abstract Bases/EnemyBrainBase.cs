@@ -2,12 +2,15 @@ using UnityEngine;
 
 public abstract class EnemyBrainBase : MonoBehaviour, IUpdatable
 {
+    [Header("References")]
     [SerializeField] protected EnemyMovementBase enemyMovement;
     [SerializeField] protected EnemyAttackBase enemyAttack;
 
     protected Room parentRoom;
 
     protected UpdateManager updateManager;
+
+    protected Transform target;
 
     protected virtual void OnDisable() { if (updateManager) updateManager.RemoveUpdatable(this); }
 
@@ -24,14 +27,16 @@ public abstract class EnemyBrainBase : MonoBehaviour, IUpdatable
     protected virtual void InitUpdatableComponents()
     {
         enemyAttack.Init(updateManager);
+        enemyMovement.Init(updateManager);
     }
 
-    public virtual void InitTarget(GameObject target)
+    public virtual void InitTarget(GameObject _target)
     {
+        target = _target.transform;
         //Debug.Log(enemyAttack.name);
 
         if (enemyAttack != null)
-            enemyAttack.InitTarget(target);
+            enemyAttack.InitTarget(_target);
     }
 
     public virtual void OnEnemyDeath()
@@ -41,9 +46,6 @@ public abstract class EnemyBrainBase : MonoBehaviour, IUpdatable
 
     public virtual void OnUpdate()
     {
-        if (enemyAttack == null || enemyMovement == null) return;
-
-        if (enemyAttack.HasTarget())
-            enemyMovement.Move(enemyAttack.GetTargetPos());
+        
     }
 }

@@ -3,7 +3,7 @@ public interface IInteractable
 {
     public void OnInteract(GameObject origin);
 }
-public class PlayerInteraction : MonoBehaviour, IUpdatable
+public class PlayerInteraction : PlayerComponentBase, IUpdatable
 {
     [Header("Interaction")]
     [SerializeField] float interactionRadius;

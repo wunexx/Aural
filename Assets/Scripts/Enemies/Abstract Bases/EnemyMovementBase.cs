@@ -1,14 +1,26 @@
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(EnemyBrainBase))]
 [RequireComponent(typeof(PathfindingAgent))]
-public abstract class EnemyMovementBase : MonoBehaviour
+public abstract class EnemyMovementBase : MonoBehaviour, IUpdatable
 {
     [SerializeField] protected float enemyStopDistance;
+    [SerializeField] protected float targetUpdateCooldown = 1f;
+
+    protected float targetUpdateTimer = 0;
 
     protected PathfindingAgent pathfindingAgent;
     protected UpdateManager updateManager;
     protected EnemyBrainBase brain;
+
+    protected virtual void OnDisable() { if (updateManager) updateManager.RemoveUpdatable(this); }
+
+    public virtual void Init(UpdateManager um)
+    {
+        updateManager = um;
+        um.AddUpdatable(this);
+    }
 
     protected virtual void Awake()
     {
@@ -22,15 +34,28 @@ public abstract class EnemyMovementBase : MonoBehaviour
 
         if (distance > enemyStopDistance)
         {
+            if (targetUpdateTimer >= targetUpdateCooldown)
+                UpdateDestination(pos);
+
             if (!pathfindingAgent.HasPath())
-            {
-                pathfindingAgent.SetDestination(pos);
-            }
+                UpdateDestination(pos);
         }
         else
         {
             pathfindingAgent.ClearPath();
         }
+    }
+
+    protected virtual void UpdateDestination(Vector2 pos)
+    {
+        pathfindingAgent.SetDestination(pos);
+        targetUpdateTimer = 0f;
+    }
+
+    public virtual void OnUpdate()
+    {
+        if (targetUpdateTimer < targetUpdateCooldown)
+            targetUpdateTimer += Time.deltaTime;
     }
 }
  
