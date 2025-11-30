@@ -30,7 +30,6 @@ public class Room : MonoBehaviour
 
         isCleared = false;
     }
-
     List<PathfindingAgent> GetPathfindingAgents()
     {
         List<PathfindingAgent> agents = new List<PathfindingAgent>();

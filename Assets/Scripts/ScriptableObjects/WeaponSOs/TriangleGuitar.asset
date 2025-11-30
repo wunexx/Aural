@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: TriangleGuitar
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
   sprite: {fileID: -3762461574764887420, guid: 8b1d5b24013d1794e9349a866f034d54, type: 3}
-  damage: 10
+  damage: 7
   cooldown: 0.1
   scatter: 10
   projectilePrefab: {fileID: 8510714533881404535, guid: 82b3bbf05c8b23c409d5586fcf90b4ef, type: 3}
   projectileSpeed: 15
   projectileLifetime: 3
+  projectilesPerShot: 1
+  shootSounds:
+  - {fileID: 8300000, guid: f2dd0c4d33e520f4db9a51e89a3a07c7, type: 3}
+  volume: 0.1

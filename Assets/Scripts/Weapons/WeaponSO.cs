@@ -16,4 +16,9 @@ public class WeaponSO : ScriptableObject
     public float projectileSpeed = 10f;
     public float projectileLifetime = 3f;
     public int projectilesPerShot = 1;
+
+    [Header("Sounds")]
+    public AudioClip[] shootSounds;
+    public float volume = 0.2f;
+
 }

@@ -14,6 +14,8 @@ public abstract class EnemyMovementBase : MonoBehaviour, IUpdatable
     protected UpdateManager updateManager;
     protected EnemyBrainBase brain;
 
+    protected Animator animator;
+
     protected virtual void OnDisable() { if (updateManager) updateManager.RemoveUpdatable(this); }
 
     public virtual void Init(UpdateManager um)
@@ -26,11 +28,20 @@ public abstract class EnemyMovementBase : MonoBehaviour, IUpdatable
     {
         pathfindingAgent = GetComponent<PathfindingAgent>();
         brain = GetComponent<EnemyBrainBase>();
+
+        animator = GetComponent<Animator>();
     }
 
     public virtual void Move(Vector2 pos)
     {
         float distance = Vector2.Distance(transform.position, pos);
+
+        if (animator != null)
+            animator.SetBool("movement", pathfindingAgent.IsMoving());
+        else
+            Debug.Log("Stupid mistake again!");
+
+        //Debug.Log(pathfindingAgent.CalculatedVelocity);
 
         if (distance > enemyStopDistance)
         {

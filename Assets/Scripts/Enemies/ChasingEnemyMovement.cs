@@ -3,12 +3,22 @@ using UnityEngine;
 public class ChasingEnemyMovement : EnemyMovementBase
 {
     [SerializeField] float jitterStrength = 0.3f;
+    [SerializeField] float jitterCooldown = 0.5f;
+
+    private Vector2 currentJitter = Vector2.zero;
+    private float jitterTimer = 0f;
 
     public override void Move(Vector2 pos)
     {
-        if(Vector2.Distance(pos, transform.position) > enemyStopDistance * 0.9f)
-            pos += Random.insideUnitCircle * jitterStrength;
+        jitterTimer += Time.deltaTime;
+        if (jitterTimer >= jitterCooldown)
+        {
+            jitterTimer = 0f;
+            currentJitter = Random.insideUnitCircle * jitterStrength;
+        }
 
-        base.Move(pos);
+        Vector2 targetWithJitter = pos + currentJitter;
+
+        base.Move(targetWithJitter);
     }
 }

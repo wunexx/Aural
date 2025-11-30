@@ -8,16 +8,16 @@ public class MeleeEnemyAttack : EnemyAttackBase
 
         base.OnUpdate();
 
-        if (CanAttack() && Vector2.Distance(transform.position, GetTargetPos()) <= attackRadius)
+        if (CanAttack())
         {
             HealthBase health = currentTarget.GetComponent<HealthBase>();
 
             if (health)
-            { health.TakeDamage(damage); }
+                health.TakeDamage(damage);
             else
-            { Debug.Log("Ooops"); }
+                Debug.Log("Ooops");
 
-            ResetCooldown();
+            OnAttack();
         }
     }
 }

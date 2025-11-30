@@ -18,6 +18,8 @@ public class PathfindingAgent : MonoBehaviour, IFixedUpdatable
     UpdateManager updateManager;
     Rigidbody2D rb;
 
+    bool isMoving = false;
+
     void OnDestroy() => updateManager.RemoveFixedUpdatable(this);
 
     private void Awake()
@@ -89,21 +91,38 @@ public class PathfindingAgent : MonoBehaviour, IFixedUpdatable
 
     public void OnFixedUpdate()
     {
-        if (currentPath.Count <= 0 || pathIndex >= currentPath.Count)
+        if (currentPath.Count == 0 || pathIndex >= currentPath.Count)
+        {
+            isMoving = false;
             return;
+        }
 
         Vector2 target = currentPath[pathIndex];
+        Vector2 dir = target - rb.position;
+        float distToTarget = dir.magnitude;
 
-        Vector2 newPos = rb.position;
+        if (distToTarget > 0.001f)
+        {
+            Vector2 previousPos = rb.position;
 
-        newPos = Vector2.MoveTowards(rb.position, target, moveSpeed * Time.fixedDeltaTime);
+            Vector2 move = dir.normalized * moveSpeed * Time.fixedDeltaTime;
+            if (move.magnitude > distToTarget)
+                move = dir;
 
-        rb.MovePosition(newPos);
+            Vector2 newPos = rb.position + move;
+            rb.MovePosition(newPos);
 
-        if (Vector2.Distance(rb.position, target) < 0.05f)
+            float sqrMoved = (newPos - previousPos).sqrMagnitude;
+            isMoving = sqrMoved > 0.00001f;
+        }
+        else
+        {
+            isMoving = false;
+        }
+
+        if (distToTarget < 0.12f)
         {
             pathIndex++;
-
             if (pathIndex >= currentPath.Count)
             {
                 currentPath.Clear();
@@ -111,6 +130,7 @@ public class PathfindingAgent : MonoBehaviour, IFixedUpdatable
             }
         }
     }
+
 
     public void Init(PathfindingSurface ps, UpdateManager um)
     {
@@ -219,6 +239,8 @@ public class PathfindingAgent : MonoBehaviour, IFixedUpdatable
 
         return 14 * diagonal + 10 * straight;
     }
+
+    public bool IsMoving() => isMoving;
 }
 class Node
 {

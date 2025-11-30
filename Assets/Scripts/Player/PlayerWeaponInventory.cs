@@ -115,7 +115,7 @@ public class PlayerWeaponInventory : PlayerComponentBase, IUpdatable
         }
 
         GameObject pickup = Instantiate(weaponInteractablePrefab, transform.position, Quaternion.identity);
-        WeaponInteractable weaponInteractable = pickup.GetComponent<WeaponInteractable>();
+        WeaponPickup weaponInteractable = pickup.GetComponent<WeaponPickup>();
         weaponInteractable.SetWeapon(inventory[currentIndex]);
 
         inventory[currentIndex] = weapon;

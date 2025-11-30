@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: LightningGuitar
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
   sprite: {fileID: -3934799465518652110, guid: 8b1d5b24013d1794e9349a866f034d54, type: 3}
-  damage: 12
+  damage: 7
   cooldown: 0.05
   scatter: 12
   projectilePrefab: {fileID: 8510714533881404535, guid: b442852aa07547e4fb6aec9759b734a3, type: 3}
   projectileSpeed: 18
   projectileLifetime: 3
+  projectilesPerShot: 1
+  shootSounds:
+  - {fileID: 8300000, guid: a2e8361ed736b5849ade2fa0f74fec8a, type: 3}
+  volume: 0.1

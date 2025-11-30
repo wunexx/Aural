@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: DuneTempleSet
   m_EditorClassIdentifier: Assembly-CSharp::EnvironmentSet
   environmentType: 1
+  bgMusic: {fileID: 8300000, guid: 7656f0b1fc560f0499693e3c97292b26, type: 3}
+  musicVolume: 0.1
   bgColor: {r: 0.54901963, g: 0.24705882, b: 0.3647059, a: 0}
   startRooms:
   - {fileID: 6144983218398613466, guid: b355494ea8286d647b40057d6666033f, type: 3}

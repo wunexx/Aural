@@ -1,10 +1,6 @@
 using UnityEngine;
 
-public class SimpleProp : HealthBase
+public class SimpleProp : Prop
 {
-    protected override void OnDeath()
-    {
-        base.OnDeath();
-        Destroy(gameObject);
-    }
+    //simplest prop imaginable
 }

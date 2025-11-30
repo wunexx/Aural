@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Harp
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
   sprite: {fileID: 8912464161644843093, guid: 44fd148037cf52a42b9ac6ad2bbdf754, type: 3}
-  damage: 14
+  damage: 5
   cooldown: 0.15
   scatter: 20
   projectilePrefab: {fileID: 8510714533881404535, guid: e7168645f9d08084c951e669d2a48554, type: 3}
   projectileSpeed: 13
   projectileLifetime: 3
   projectilesPerShot: 3
+  shootSounds:
+  - {fileID: 8300000, guid: 69c0f86ff0004be4c9b909ad6669f220, type: 3}
+  volume: 0.07

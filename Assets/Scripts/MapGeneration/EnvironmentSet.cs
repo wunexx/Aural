@@ -5,7 +5,7 @@ public enum EnvironmentType
 {
     RootPath,
     DuneTemple,
-    Environment3
+    TheFinal
 }
 
 [CreateAssetMenu(fileName = "EnvironmentSet", menuName = "EnvironmentSets/EnvironmentSet")]
@@ -13,6 +13,11 @@ public class EnvironmentSet : ScriptableObject
 {
     public EnvironmentType environmentType;
 
+    [Header("Audio")]
+    public AudioClip bgMusic;
+    public float musicVolume;
+
+    [Header("Camera Color")]
     public Color bgColor;
 
     [Header("Rooms")]

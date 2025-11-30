@@ -12,6 +12,11 @@ public enum DoorDirection
 public class Door : MonoBehaviour, IObstacle
 {
     [SerializeField] DoorDirection direction;
+
+    [Header("Sounds")]
+    [SerializeField] AudioClip doorSound;
+    [SerializeField] float volume = 0.2f;
+
     bool isConnected = false;
     Collider2D _collider;
     SpriteRenderer spriteRenderer;
@@ -29,7 +34,7 @@ public class Door : MonoBehaviour, IObstacle
 
     private void Start()
     {
-        Open();
+        Open(false);
     }
 
     public Vector2 GetDoorSize()
@@ -54,19 +59,25 @@ public class Door : MonoBehaviour, IObstacle
         isConnected = state;
     }
 
-    public void Open()
+    public void Open(bool playSound = true)
     {
         _collider.enabled = false;
         //spriteRenderer.enabled = false;
         pathfindingSurface.UpdateObstacle(gameObject, true);
         animator.SetTrigger("Open");
+
+        if (playSound)
+            SoundManager.Instance.PlayOtherSFX(doorSound, volume);
     }
 
-    public void Close()
+    public void Close(bool playSound = true)
     {
         _collider.enabled = true;
         //spriteRenderer.enabled = true;
         pathfindingSurface.UpdateObstacle(gameObject, false);
         animator.SetTrigger("Close");
+
+        if(playSound)
+            SoundManager.Instance.PlayOtherSFX(doorSound, volume);
     }
 }

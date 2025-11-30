@@ -29,6 +29,12 @@ public class PlayerHealth : HealthBase
         UpdateUI();
     }
 
+    public override void Heal(float amount)
+    {
+        base.Heal(amount);
+        UpdateUI();
+    }
+
     protected override void OnDeath()
     {
         base.OnDeath();

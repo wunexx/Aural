@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -28,7 +26,7 @@ public class DungeonGenerator : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(GenerateDungeon(EnvironmentType.DuneTemple));
+        StartCoroutine(GenerateDungeon(EnvironmentType.RootPath));
     }
 #if UNITY_EDITOR
     public void GenerateFuncForButton() //only for testing
@@ -48,6 +46,7 @@ public class DungeonGenerator : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
+
         player.transform.position = transform.position;
 
         CleanDungeon();
@@ -64,6 +63,7 @@ public class DungeonGenerator : MonoBehaviour
             Debug.LogWarning("Environment Set not found !!!");
             yield break;
         }
+        SoundManager.Instance.PlayMusic(environmentSet.bgMusic);
 
         _camera.backgroundColor = environmentSet.bgColor;
 
@@ -120,7 +120,9 @@ public class DungeonGenerator : MonoBehaviour
 
                         Room room = Instantiate(roomToPlace.gameObject, pos, Quaternion.identity).GetComponent<Room>();
 
+
                         AddRoomToPathfindingSurface(room);
+
                         room.InitAgents(pathfindingSurface, updateManager);
 
                         lastRoom.MarkDoorAsConnected(dir);
@@ -187,14 +189,14 @@ public class DungeonGenerator : MonoBehaviour
         Transform grid = room.transform.Find("Tilemaps");
         if (grid == null)
         {
-            Debug.LogError("No tilemaps child found on room: " + room.name);
+            Debug.LogWarning("No tilemaps child found on room: " + room.name);
             return;
         }
 
         Tilemap tilemap = grid.Find("Walls")?.GetComponent<Tilemap>();
         if (tilemap == null)
         {
-            Debug.LogError("No Walls tilemap found under Grid in room: " + room.name);
+            Debug.LogWarning("No Walls tilemap found under Grid in room: " + room.name);
             return;
         }
 

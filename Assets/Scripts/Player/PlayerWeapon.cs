@@ -78,6 +78,8 @@ public class PlayerWeapon : PlayerComponentBase, IUpdatable
             ProjectileBase projectile = Instantiate(currentWeapon.projectilePrefab, firepoint.position, Quaternion.Euler(0, 0, angle)).GetComponent<ProjectileBase>();
 
             projectile.Init(scatterDir, updateManager, currentWeapon.projectileSpeed, currentWeapon.projectileLifetime, currentWeapon.damage);
+
+            SoundManager.Instance.PlayWeaponSFX(currentWeapon.shootSounds[Random.Range(0, currentWeapon.shootSounds.Length)], currentWeapon.volume);
         }
     }
 }

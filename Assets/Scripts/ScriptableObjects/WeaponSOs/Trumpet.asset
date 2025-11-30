@@ -17,6 +17,9 @@ MonoBehaviour:
   cooldown: 0.3
   scatter: 3
   projectilePrefab: {fileID: 8510714533881404535, guid: 13cf168cb2f0dab439876b3659c665d3, type: 3}
-  projectileSpeed: 1
+  projectileSpeed: 10
   projectileLifetime: 2
   projectilesPerShot: 1
+  shootSounds:
+  - {fileID: 8300000, guid: 76be14993a07ee24697d147b194a9af4, type: 3}
+  volume: 0.1

@@ -7,6 +7,8 @@ public abstract class ProjectileBase : MonoBehaviour, IFixedUpdatable
     [Tooltip("Decides who is the target of projectile")]
     [SerializeField] protected bool playerProjectile = false;
 
+    [SerializeField] protected bool destroyOnCol = true;
+
     protected float damage;
     protected float speed;
     protected float lifetime;
@@ -70,7 +72,7 @@ public abstract class ProjectileBase : MonoBehaviour, IFixedUpdatable
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(targetTag))
+        if (collision.CompareTag(targetTag) || collision.CompareTag("Prop"))
         {
             HealthBase health = collision.gameObject.GetComponent<HealthBase>();
 
@@ -78,6 +80,8 @@ public abstract class ProjectileBase : MonoBehaviour, IFixedUpdatable
 
             health.TakeDamage(damage);
         }
-        Destroy(gameObject);
+
+        if(destroyOnCol)
+            Destroy(gameObject);
     }
 }

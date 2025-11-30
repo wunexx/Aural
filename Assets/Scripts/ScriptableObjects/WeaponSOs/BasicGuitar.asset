@@ -19,3 +19,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8510714533881404535, guid: a82a65c173d3953478f20f6ab2646f95, type: 3}
   projectileSpeed: 10
   projectileLifetime: 3
+  projectilesPerShot: 1
+  shootSounds:
+  - {fileID: 8300000, guid: 888997044a53fc541a6223236da9e5b9, type: 3}
+  volume: 0.1
