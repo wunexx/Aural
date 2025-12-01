@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(EnemyBrainBase))]
 [RequireComponent(typeof(PathfindingAgent))]

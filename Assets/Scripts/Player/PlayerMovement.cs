@@ -1,4 +1,3 @@
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -14,6 +13,13 @@ public class PlayerMovement : PlayerComponentBase, IUpdatable, IFixedUpdatable
 
     [Header("References")]
     [SerializeField] UpdateManager updateManager;
+    [SerializeField] TrailRenderer dashTrail;
+    [SerializeField] ParticleSystem footstepsParticles;
+
+    [Header("Audio")]
+    [SerializeField] AudioClip dashSound;
+    [SerializeField] float volume = 0.2f;
+
     Animator animator;
     Rigidbody2D rb;
     Vector2 input;
@@ -29,6 +35,8 @@ public class PlayerMovement : PlayerComponentBase, IUpdatable, IFixedUpdatable
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        dashTrail.emitting = false;
     }
 
     private void OnEnable()
@@ -49,6 +57,18 @@ public class PlayerMovement : PlayerComponentBase, IUpdatable, IFixedUpdatable
 
         animator.SetFloat("movement", input.magnitude);
 
+        if (input.magnitude > 0.001f)
+        {
+            if (!footstepsParticles.isPlaying)
+                footstepsParticles.Play();
+        }
+        else
+        {
+            if (footstepsParticles.isPlaying)
+                footstepsParticles.Stop();
+        }
+
+
         if (dashCooldownTimer > 0f)
             dashCooldownTimer -= Time.deltaTime;
 
@@ -64,7 +84,10 @@ public class PlayerMovement : PlayerComponentBase, IUpdatable, IFixedUpdatable
 
             dashTimer -= Time.fixedDeltaTime;
             if (dashTimer <= 0)
+            {
                 isDashing = false;
+                dashTrail.emitting = false;
+            }
         }
         else
             rb.MovePosition(rb.position + input.normalized * moveSpeed * Time.fixedDeltaTime);
@@ -77,6 +100,10 @@ public class PlayerMovement : PlayerComponentBase, IUpdatable, IFixedUpdatable
         dashTimer = dashDuration;
 
         dashDirection = input.sqrMagnitude > 0 ? input : transform.right;
+
+        dashTrail.emitting = true;
+
+        SoundManager.Instance.PlayOtherSFX(dashSound, volume);
     }
 
     public override void OnPlayerDeath()

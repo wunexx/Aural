@@ -24,6 +24,12 @@ MonoBehaviour:
   - roomType: 3
     count: 1
   - roomType: 1
+    count: 1
+  - roomType: 2
+    count: 1
+  - roomType: 1
     count: 2
+  - roomType: 2
+    count: 1
   - roomType: 4
     count: 1
