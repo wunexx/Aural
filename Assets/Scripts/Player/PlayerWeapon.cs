@@ -32,6 +32,8 @@ public class PlayerWeapon : PlayerComponentBase, IUpdatable
 
     public void OnUpdate()
     {
+        if (PauseManager.Instance.IsPaused()) return;
+
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
         Vector2 dir = mousePosition - (Vector2)transform.position;

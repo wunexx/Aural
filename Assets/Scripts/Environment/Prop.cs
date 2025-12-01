@@ -10,7 +10,7 @@ public abstract class Prop : HealthBase
         base.OnDeath();
 
         if (Random.value < dropChance && possibleDrops.Length > 0)
-            Instantiate(possibleDrops[Random.Range(0, possibleDrops.Length)], transform.position, Quaternion.identity);
+            Instantiate(possibleDrops[Random.Range(0, possibleDrops.Length)], transform.position, Quaternion.identity, transform.parent);
 
         Destroy(gameObject);
     }

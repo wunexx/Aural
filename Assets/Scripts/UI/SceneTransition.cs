@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class SceneTransition : MonoBehaviour
 {
     Animator animator;
-    Image image;
 
     string targetScene = "";
     
@@ -24,6 +23,8 @@ public class SceneTransition : MonoBehaviour
 
     public void OnAnimationEnd()
     {
+        Time.timeScale = 1;
+
         if (!string.IsNullOrEmpty(targetScene)) SceneManager.LoadScene(targetScene);
         else animator.SetTrigger("FadeOut");
     }

@@ -180,10 +180,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveProjectile
   playerProjectile: 1
   destroyOnCol: 1
-  hitOncePerTarget: 1
   sprites:
   - {fileID: -7214521992026464090, guid: 8b1d5b24013d1794e9349a866f034d54, type: 3}
   - {fileID: 5311936790199204216, guid: 8b1d5b24013d1794e9349a866f034d54, type: 3}
   - {fileID: 2714527918210854074, guid: 8b1d5b24013d1794e9349a866f034d54, type: 3}
+  effectPrefab: {fileID: 3022102558446658867, guid: cd3d579a2d65b3241a1812f639db37ec, type: 3}
+  effectDestroyTime: 1
+  destroySound: {fileID: 8300000, guid: 99716a534fcfad849bff8b94a27662ea, type: 3}
+  volume: 0.05
   frequency: 20
   amplitude: 1

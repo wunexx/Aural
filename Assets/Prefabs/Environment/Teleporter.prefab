@@ -219,6 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Teleporter
   pickupCooldown: 0.15
+  scoreCost: 75
   environmentType: 0
   teleportSound: {fileID: 8300000, guid: a09c272f4804e8c42b4eebc02068ccb2, type: 3}
   volume: 0.2

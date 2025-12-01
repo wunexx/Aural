@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f61e7738ba780ea48a53c2fc849bd379, type: 3}
   m_Name: FastTrumpet
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
+  _name: Fast Trumpet
   sprite: {fileID: 3463751271148345924, guid: 2f8d4befb34e99240abf825df41b7ac3, type: 3}
   damage: 15
   cooldown: 0.15

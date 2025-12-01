@@ -15,6 +15,9 @@ public class WeaponCrate : InteractableBase
     [SerializeField] AudioClip sound;
     [SerializeField] float volume = 0.2f;
 
+    [Header("Other")]
+    [SerializeField] int scoreCost = 20;
+
     public override void OnInteract(GameObject origin)
     {
         if (!canInteract) return;
@@ -23,7 +26,7 @@ public class WeaponCrate : InteractableBase
 
         GameObject drop = possibleDrops[Random.Range(0, possibleDrops.Length)];
 
-        GameObject obj = Instantiate(drop, transform.position, Quaternion.identity);
+        GameObject obj = Instantiate(drop, transform.position, Quaternion.identity, transform.parent);
 
         WeaponPickup pickup = obj.GetComponent<WeaponPickup>();
 
@@ -39,6 +42,8 @@ public class WeaponCrate : InteractableBase
 
         if(sound != null)
             SoundManager.Instance.PlayOtherSFX(sound, volume);
+
+        PlayerScore.Instance.AddScore(scoreCost);
 
         Destroy(gameObject);
     }

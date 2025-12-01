@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Teleporter : InteractableBase
 {
+    [SerializeField] int scoreCost = 50;
     [SerializeField] EnvironmentType environmentType;
 
     [SerializeField] AudioClip teleportSound;
@@ -24,6 +25,8 @@ public class Teleporter : InteractableBase
         //Debug.Log("Interacted with teleporter");
 
         SoundManager.Instance.PlayOtherSFX(teleportSound, volume);
+
+        PlayerScore.Instance.AddScore(scoreCost);
 
         StartCoroutine(dungeonGenerator.GenerateDungeon(environmentType));
     }

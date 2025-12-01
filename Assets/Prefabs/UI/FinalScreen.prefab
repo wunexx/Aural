@@ -305,6 +305,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathScreenManager
   sceneTransition: {fileID: 0}
+  scoreText: {fileID: 6092240648687914762}
+  objectsToDisable: []
+  isDeathWinScreen: 0
 --- !u!95 &8480777675457079231
 Animator:
   serializedVersion: 7
@@ -317,7 +320,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 4c60ca58952693f429feee159cc99219, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0

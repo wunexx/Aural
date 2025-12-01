@@ -23,6 +23,14 @@ public abstract class ProjectileBase : MonoBehaviour, IFixedUpdatable
     [Header("Sprites")]
     [SerializeField] protected Sprite[] sprites;
 
+    [Header("Effects")]
+    [SerializeField] protected GameObject effectPrefab;
+    [SerializeField] protected float effectDestroyTime = 1f;
+
+    [Header("Sounds")]
+    [SerializeField] protected AudioClip destroySound;
+    [SerializeField] protected float volume = 0.15f;
+
     protected string targetTag;
 
     protected SpriteRenderer spriteRenderer;
@@ -67,7 +75,7 @@ public abstract class ProjectileBase : MonoBehaviour, IFixedUpdatable
         timeAlive += Time.fixedDeltaTime;
 
         if (timeAlive >= lifetime)
-            Destroy(gameObject);
+            DestroyThis();
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
@@ -81,7 +89,17 @@ public abstract class ProjectileBase : MonoBehaviour, IFixedUpdatable
             health.TakeDamage(damage);
         }
 
-        if(destroyOnCol)
-            Destroy(gameObject);
+        if (destroyOnCol)
+            DestroyThis();
+    }
+
+    void DestroyThis()
+    {
+        SoundManager.Instance.PlayProjectileDestroySFX(destroySound, volume);
+
+        GameObject effect = Instantiate(effectPrefab, transform.position, Quaternion.identity);
+        Destroy(effect, effectDestroyTime);
+
+        Destroy(gameObject);
     }
 }

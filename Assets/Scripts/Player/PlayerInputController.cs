@@ -35,4 +35,9 @@ public class PlayerInputController : MonoBehaviour
     {
         return playerInput.Player.Interact.ReadValue<float>();
     }
+
+    public float GetPauseInput()
+    {
+        return playerInput.Player.Pause.ReadValue<float>();
+    }
 }

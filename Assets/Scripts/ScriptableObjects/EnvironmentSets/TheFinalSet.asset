@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TheFinalSet
   m_EditorClassIdentifier: Assembly-CSharp::EnvironmentSet
   environmentType: 2
-  bgMusic: {fileID: 8300000, guid: c71f75d02bf9c50438bdd5ed36ecdbef, type: 3}
-  musicVolume: 0.1
+  bgMusic: {fileID: 8300000, guid: 86306ff74e8e3854bb47acf254f3402a, type: 3}
+  musicVolume: 0.05
   bgColor: {r: 1, g: 1, b: 0.92156863, a: 0}
   startRooms:
   - {fileID: 1807971150966718726, guid: 63457bd47bcf5e145907fab51f52d29e, type: 3}

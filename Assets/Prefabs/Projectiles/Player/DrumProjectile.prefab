@@ -134,9 +134,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExpandingProjectile
   playerProjectile: 1
   destroyOnCol: 0
-  hitOncePerTarget: 0
   sprites:
   - {fileID: -1725139434265983995, guid: 2f8d4befb34e99240abf825df41b7ac3, type: 3}
+  effectPrefab: {fileID: 0}
+  effectDestroyTime: 1
+  destroySound: {fileID: 8300000, guid: 99716a534fcfad849bff8b94a27662ea, type: 3}
+  volume: 0.05
   sizeMultiplier: 4
 --- !u!58 &-8170377004639384329
 CircleCollider2D:

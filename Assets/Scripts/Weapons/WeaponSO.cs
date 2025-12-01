@@ -4,6 +4,7 @@ using UnityEngine;
 public class WeaponSO : ScriptableObject
 {
     [Header("Appearance")]
+    public string _name;
     public Sprite sprite;
 
     [Header("Shooting")]

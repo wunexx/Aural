@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ public class PlayerWeaponInventory : PlayerComponentBase, IUpdatable
     [SerializeField] private UpdateManager updateManager;
     [SerializeField] private WeaponSO startingWeapon;
     [SerializeField] private GameObject weaponInteractablePrefab;
+    [SerializeField] TextMeshProUGUI nameText;
 
     [Header("UI Colors")]
     [SerializeField] private Color selectedBgColor = new Color(0f, 0f, 0f, 0.8f);
@@ -154,6 +156,8 @@ public class PlayerWeaponInventory : PlayerComponentBase, IUpdatable
         slot.icon.enabled = inventory[index] != null;
 
         slot.background.color = (index == currentIndex) ? selectedBgColor : normalBgColor;
+
+        nameText.text = $"{inventory[currentIndex]._name}";
     }
 
     private void UpdateAllSlotUI()
@@ -164,6 +168,7 @@ public class PlayerWeaponInventory : PlayerComponentBase, IUpdatable
 
     private void HighlightCurrentSlot()
     {
+        nameText.text = $"{inventory[currentIndex]._name}";
         for (int i = 0; i < slots.Length; i++)
         {
             Slot slot = slots[i];

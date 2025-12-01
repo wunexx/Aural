@@ -180,7 +180,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExpandingProjectile
   playerProjectile: 1
   destroyOnCol: 1
-  hitOncePerTarget: 1
   sprites:
   - {fileID: 4549704305313525908, guid: 44fd148037cf52a42b9ac6ad2bbdf754, type: 3}
+  effectPrefab: {fileID: 3022102558446658867, guid: cd3d579a2d65b3241a1812f639db37ec, type: 3}
+  effectDestroyTime: 1
+  destroySound: {fileID: 8300000, guid: 99716a534fcfad849bff8b94a27662ea, type: 3}
+  volume: 0.05
   sizeMultiplier: 3

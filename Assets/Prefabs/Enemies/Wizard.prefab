@@ -167,7 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleEnemyHealth
   health: 80
-  effectPrefab: {fileID: 0}
+  scoreCost: 50
+  effectPrefab: {fileID: 8782009059513614302, guid: 171dda363e9efd94ca9bc63e38ca9658, type: 3}
   effectDestroyTime: 1
   hitFlashDuration: 0.1
   hitFlashColor: {r: 0.6901961, g: 0.1882353, b: 0.36078432, a: 1}

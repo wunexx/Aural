@@ -179,5 +179,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BasicProjectile
   playerProjectile: 0
+  destroyOnCol: 1
   sprites:
   - {fileID: -5623670562421493998, guid: 6c8e6ed683c0b7846a0f017850e8ddd4, type: 3}
+  effectPrefab: {fileID: 4364062416287365583, guid: fe2205740225ab04bb07d3c6308b7c8b, type: 3}
+  effectDestroyTime: 1
+  destroySound: {fileID: 8300000, guid: 99716a534fcfad849bff8b94a27662ea, type: 3}
+  volume: 0.05

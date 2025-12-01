@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f61e7738ba780ea48a53c2fc849bd379, type: 3}
   m_Name: TriangleGuitar
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
+  _name: Triangle Guitar
   sprite: {fileID: -3762461574764887420, guid: 8b1d5b24013d1794e9349a866f034d54, type: 3}
   damage: 7
   cooldown: 0.1

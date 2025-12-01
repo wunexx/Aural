@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class HealthBase : MonoBehaviour
 {
     [SerializeField] protected float health = 100f;
+    [SerializeField] protected int scoreCost = 0;
 
     [Header("Effect")]
     [SerializeField] protected GameObject effectPrefab;
@@ -80,6 +81,8 @@ public abstract class HealthBase : MonoBehaviour
             GameObject effect = Instantiate(effectPrefab, transform.position, Quaternion.identity);
             Destroy(effect, effectDestroyTime);
         }
+
+        PlayerScore.Instance.AddScore(scoreCost);
     }
 
     protected virtual IEnumerator HitFlash()

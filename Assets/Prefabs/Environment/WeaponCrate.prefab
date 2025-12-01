@@ -164,10 +164,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0e3991c420c84e64c95706fc95a6225a, type: 2}
   - {fileID: 11400000, guid: 7c55f0b25f165294696ff4ad63a78a3f, type: 2}
   - {fileID: 11400000, guid: 7439c718e4e5e944f88c5d5fc09ff51f, type: 2}
-  effectPrefab: {fileID: 0}
-  effectDestroyTime: 0
+  - {fileID: 11400000, guid: d72f495c30ee84249a99eb378a16c15a, type: 2}
+  effectPrefab: {fileID: 467751860875805754, guid: 7c6d9bb9c8994364dbe5ba2e32dd4d13, type: 3}
+  effectDestroyTime: 1
   sound: {fileID: 8300000, guid: 396ce4112dde34f4c96423a6e6cec00b, type: 3}
   volume: 0.2
+  scoreCost: 20
 --- !u!1 &8590872246949488838
 GameObject:
   m_ObjectHideFlags: 0

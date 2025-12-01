@@ -12,6 +12,10 @@ public class PlayerHealth : HealthBase
     [SerializeField] GameObject deathScreenObj;
     [SerializeField] PlayerComponentBase[] playerComponents;
 
+    [Header("Audio")]
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] float volume;
+
     float initialHealth;
 
     protected override void Awake()
@@ -43,6 +47,9 @@ public class PlayerHealth : HealthBase
             c.OnPlayerDeath();
 
         deathScreenObj.SetActive(true);
+
+        SoundManager.Instance.PlayOtherSFX(deathSound, volume);
+
         UpdateUI();
     }
 

@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioSource hitSource;
     [SerializeField] AudioSource otherSource;
     [SerializeField] AudioSource enemyAttackSource;
+    [SerializeField] AudioSource projectileDestroySource;
 
     public static SoundManager Instance;
 
@@ -78,6 +79,11 @@ public class SoundManager : MonoBehaviour
     public void PlayEnemyAttackSFX(AudioClip clip, float volume = 0.1f)
     {
         PlaySFX(enemyAttackSource, clip, volume);
+    }
+
+    public void PlayProjectileDestroySFX(AudioClip clip, float volume = 0.1f)
+    {
+        PlaySFX(projectileDestroySource, clip, volume);
     }
 
     public void PlaySFX(AudioSource source, AudioClip clip, float volume = 0.1f)

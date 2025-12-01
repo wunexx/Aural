@@ -141,8 +141,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleProp
   health: 40
-  effectPrefab: {fileID: 0}
-  effectDestroyTime: 0
+  scoreCost: 10
+  effectPrefab: {fileID: 4364062416287365583, guid: fe2205740225ab04bb07d3c6308b7c8b, type: 3}
+  effectDestroyTime: 1
   hitFlashDuration: 0.1
   hitFlashColor: {r: 0.6901961, g: 0.1882353, b: 0.36078432, a: 1}
   healFlashDuration: 0.1
@@ -151,3 +152,5 @@ MonoBehaviour:
   hitVolume: 0.3
   healSound: {fileID: 0}
   healVolume: 0.2
+  possibleDrops: []
+  dropChance: 0.05
