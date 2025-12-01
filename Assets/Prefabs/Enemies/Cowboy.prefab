@@ -305,7 +305,7 @@ MonoBehaviour:
   rotateWeaponToTarget: 1
   weaponPivot: {fileID: 2290366703428642936}
   attackSound: {fileID: 8300000, guid: b68957191e6966f43a3c7b73363e85b0, type: 3}
-  volume: 0.2
+  volume: 0.12
   firepoint: {fileID: 994563040884362174}
   projectilePrefab: {fileID: 8510714533881404535, guid: 1ec7295ca30acba4a9bee06abcfc7e28, type: 3}
   scatter: 5
