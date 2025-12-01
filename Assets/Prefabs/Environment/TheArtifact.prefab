@@ -130,9 +130,7 @@ MonoBehaviour:
   pickupCooldown: 0.15
   scoreCost: 200
   sfx: {fileID: 8300000, guid: 0fac1c9b7ffffc3428cea55e213b6a45, type: 3}
-  volume: 0.35
-  music: {fileID: 8300000, guid: 86306ff74e8e3854bb47acf254f3402a, type: 3}
-  musicVolume: 0.2
+  volume: 0.2
 --- !u!61 &5258176923444655142
 BoxCollider2D:
   m_ObjectHideFlags: 0

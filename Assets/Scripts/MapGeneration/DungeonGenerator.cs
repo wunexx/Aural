@@ -63,7 +63,7 @@ public class DungeonGenerator : MonoBehaviour
             Debug.LogWarning("Environment Set not found !!!");
             yield break;
         }
-        SoundManager.Instance.PlayMusic(environmentSet.bgMusic);
+        SoundManager.Instance.PlayMusic(environmentSet.bgMusic, environmentSet.musicVolume);
 
         _camera.backgroundColor = environmentSet.bgColor;
 

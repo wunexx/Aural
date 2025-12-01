@@ -33,7 +33,7 @@ public class SoundManager : MonoBehaviour
         yield return StartCoroutine(FadeMusic(fadeTime));
 
         musicSource.clip = newTrack;
-        musicSource.volume = volume;
+        musicSource.volume = 0f;
         musicSource.Play();
 
         for (float t = 0; t < fadeTime; t += Time.deltaTime)
@@ -43,8 +43,8 @@ public class SoundManager : MonoBehaviour
         }
 
         musicSource.volume = volume;
-
     }
+
 
     public IEnumerator FadeMusic(float fadeTime)
     {

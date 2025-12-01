@@ -222,7 +222,7 @@ MonoBehaviour:
   scoreCost: 75
   environmentType: 0
   teleportSound: {fileID: 8300000, guid: a09c272f4804e8c42b4eebc02068ccb2, type: 3}
-  volume: 0.2
+  volume: 0.1
 --- !u!61 &3392159160505825197
 BoxCollider2D:
   m_ObjectHideFlags: 0

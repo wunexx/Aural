@@ -23,4 +23,4 @@ MonoBehaviour:
   projectilesPerShot: 1
   shootSounds:
   - {fileID: 8300000, guid: a2e8361ed736b5849ade2fa0f74fec8a, type: 3}
-  volume: 0.1
+  volume: 0.07

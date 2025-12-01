@@ -97,9 +97,11 @@ public abstract class ProjectileBase : MonoBehaviour, IFixedUpdatable
     {
         SoundManager.Instance.PlayProjectileDestroySFX(destroySound, volume);
 
-        GameObject effect = Instantiate(effectPrefab, transform.position, Quaternion.identity);
-        Destroy(effect, effectDestroyTime);
-
+        if(effectPrefab != null)
+        {
+            GameObject effect = Instantiate(effectPrefab, transform.position, Quaternion.identity);
+            Destroy(effect, effectDestroyTime);
+        }
         Destroy(gameObject);
     }
 }
