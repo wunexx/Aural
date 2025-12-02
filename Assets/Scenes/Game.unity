@@ -6204,7 +6204,6 @@ MonoBehaviour:
   panelObjects:
   - {fileID: 1062905148}
   - {fileID: 1119984368}
-  - {fileID: 899827566}
   pausePanel: {fileID: 899827566}
   updateManager: {fileID: 1040614010}
   sceneTransition: {fileID: 1532285387}

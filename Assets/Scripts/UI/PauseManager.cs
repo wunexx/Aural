@@ -26,7 +26,9 @@ public class PauseManager : MonoBehaviour, IUpdatable
 
     public void OnUpdate()
     {
-        if(PlayerInputController.Instance.GetPauseInput() == 1)
+        if (!CanPause()) return;
+
+        if(PlayerInputController.Instance.GetPauseInput())
         {
             OnPausePressed();
         }
@@ -34,9 +36,6 @@ public class PauseManager : MonoBehaviour, IUpdatable
 
     public void OnPausePressed()
     {
-        if (isPaused == false && CanPause() == false)
-            return;
-
         isPaused = !isPaused;
 
         Time.timeScale = isPaused ? 0 : 1;
@@ -47,7 +46,7 @@ public class PauseManager : MonoBehaviour, IUpdatable
     public bool IsPaused() => isPaused;
 
     public void OnDeathOrWin()
-    {
+    { 
         pausePanel.SetActive(false);
 
         isPaused = true;

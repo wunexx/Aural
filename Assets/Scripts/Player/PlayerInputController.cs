@@ -36,8 +36,9 @@ public class PlayerInputController : MonoBehaviour
         return playerInput.Player.Interact.ReadValue<float>();
     }
 
-    public float GetPauseInput()
+    public bool GetPauseInput()
     {
-        return playerInput.Player.Pause.ReadValue<float>();
+        return playerInput.Player.Pause.WasPressedThisFrame();
+
     }
 }
